@@ -76,17 +76,20 @@ def add_node(table, vals):
     :return None
     """
 
-    # adding table, dependent tables to root if not in tree
-    if not relationship.contains(table):
-        relationship.create_node(table, table, "root")
-        for i in vals:
-            if not relationship.contains(i):
-                relationship.create_node(i, i, table)
-    # adding dependent tables if table already in tree
-    else:
-        for i in vals:
-            if not relationship.contains(i):
-                relationship.create_node(i, i, table)
+    try:
+        # adding table, dependent tables to root if not in tree
+        if not relationship.contains(table):
+            relationship.create_node(table, table, "root")
+            for i in vals:
+                if not relationship.contains(i):
+                    relationship.create_node(i, i, table)
+        # adding dependent tables if table already in tree
+        else:
+            for i in vals:
+                if not relationship.contains(i):
+                    relationship.create_node(i, i, table)
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
