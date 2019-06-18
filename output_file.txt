@@ -1,0 +1,71 @@
+﻿root
+├── crosscheck.calibration_maintenance
+│   ├── base.calibration_maintenance
+│   ├── crosscheck.calibrations
+│   └── crosscheck.games
+│       ├── base.games
+│       ├── base.locations
+│       ├── crosscheck.tags
+│       │   └── scout.tags
+│       │       ├── base.tags
+│       │       └── dict.player_dedup
+│       └── rundown.location_history
+│           └── rundown.location_history_rows
+│               └── rundown.locations
+├── games.autorecalibration
+├── games.latency
+│   ├── advance.merged_measurement
+│   ├── sdkjson.live_pitch_data
+│   └── sdkjson.measurement
+├── games.live_final
+│   ├── merged.batting_launch_data
+│   ├── merged.live_pitch_data
+│   └── merged.measurement
+├── games.metadata
+├── games.nulls
+├── games.oem
+│   ├── radar.live_pitch_data
+│   └── radar.measurement
+├── games.vision
+│   ├── vision.final_pitch_data
+│   └── vision.live_pitch_data
+├── games.vision_oem
+├── locations.latency
+├── locations.vision_oem
+├── report.delivered_combined_hist
+│   ├── report.delivered_exceptions_hist
+│   │   ├── report.delivered_new_pk
+│   │   │   └── broadcast.delivered_games
+│   │   └── report.exp_access_rules_hist
+│   │       └── rundown.access_rules_end
+│   └── report.delivered_no_exceptions_hist
+├── report.delivered_no_exceptions
+│   └── report.exp_access_rules
+│       ├── broadcast.access_rules
+│       └── broadcast.priority_lists
+├── report.false_delivered_hist
+├── report.hardball_pitchers
+│   └── base.measurements
+├── report.mlb_orgs
+│   ├── dict.team_org
+│   └── scout.teams
+├── report.practice_pitching
+│   ├── practice.games
+│   └── practice.plays
+├── report.practice_pitching_dev
+│   ├── practice.games_dev
+│   └── practice.plays_dev
+├── report.scheduled_combined
+│   ├── report.scheduled_exceptions
+│   │   └── lineup.schedule
+│   └── report.scheduled_no_exceptions
+├── report.scheduled_no_exceptions_hist
+│   └── report.schedule_new_level
+├── report.verified_levels_18
+│   └── dict.game_type
+├── rundown.access_rules_history
+│   └── rundown.access_rules_rows
+│       └── rundown.access_rules
+└── trout.app_angle
+    ├── base.players
+    └── report.hardball_ref
