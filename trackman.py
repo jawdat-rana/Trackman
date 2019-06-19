@@ -3,30 +3,32 @@ import os
 from treelib import Node, Tree
 
 
-def read_files(path):
+def read_config_file(dir_path, file_name):
     """
-    read all configuration files from source directory and pass json data to process individual file
+    read file and return contents
 
-    :param path: string for source directory
-    :return None
+    :param dir_path: string directory path
+    :param file_name: string file name
+    :return config_data: json data from configuration file
     """
-    files = os.listdir(path)
+    try:
+        with open(os.path.join(dir_path + file_name)) as file_handle:
+            config_data = json.loads(file_handle.read())
+        file_handle.close()
 
-    for file in files:
-        try:
-            with open(os.path.join(path + file)) as file_handle:
-                data = json.loads(file_handle.read())
-            file_handle.close()
-            process_file(data)
-        except Exception as e:
-            print(e)
+    except Exception as e:
+        print(e)
+
+    return config_data
 
 
-def process_file(data):
+def process_file(data, tree, parent):
     """
     find dependencies from provided query data and append to storage model
 
-    :param data: configuration file object
+    :param data: json data from configuration file
+    :param tree: tree node
+    :param parent: string parent
     :return None
     """
     try:
@@ -54,51 +56,41 @@ def process_file(data):
                 get_next = True
 
         # schema and table name as provided in configuration file
-        table_name = "{}.{}".format(data['schema']['S'], data['table']['S'])
+        table = "{}.{}".format(data['schema']['S'], data['table']['S'])
 
-        temp = []
+        if not tree.contains(table):
+            tree.create_node(table, table, parent)
 
-        # tables names used in the query
         for items in table_names:
-            temp.append(items)
+            # base case
+            if os.path.exists(os.path.join(path + items + ".json")):
+                d = read_config_file(path, items + ".json")
+                process_file(d, tree, table)
+            elif not tree.contains(items):
+                tree.create_node(items, items, table)
+            else:
+                pass
+                # need to implement if an item is already in tree but for a different parent
+                # temp = Tree()
+                # temp.create_node(items, items)
+                # tree.paste(table, temp)
 
-        add_node(table_name, temp)
-
-    except Exception as e:
-        print(e)
-
-
-def add_node(table, vals):
-    """
-    
-    :param table: table name
-    :param vals: dependent tables
-    :return None
-    """
-
-    try:
-        # adding table, dependent tables to root if not in tree
-        if not relationship.contains(table):
-            relationship.create_node(table, table, "root")
-            for i in vals:
-                if not relationship.contains(i):
-                    relationship.create_node(i, i, table)
-        # adding dependent tables if table already in tree
-        else:
-            for i in vals:
-                if not relationship.contains(i):
-                    relationship.create_node(i, i, table)
     except Exception as e:
         print(e)
 
 
 if __name__ == "__main__":
-    # initializing tree structure for storing relationships / dependencies
-    relationship = Tree()
-    relationship.create_node("root", "root")
+    path = "tables//"
+    files = os.listdir(path)
 
-    # read all files
-    read_files(path="tables//")
+    for file in files:
+        relationship = Tree()
 
-    # print tables names and their dependencies in ascii
-    relationship.show()
+        data = read_config_file(path, file)
+
+        table_name = "{}.{}".format(data['schema']['S'], data['table']['S'])
+        relationship.create_node(table_name, table_name)
+
+        process_file(data, relationship, table_name)
+
+        relationship.show()
